@@ -30,7 +30,7 @@ API para registrar e controlar despesas. Projeto de estudo de .NET.
 - [[Injeção de dependência]] (commit `b5e5e51`)
 
 ## Decisões
-_(nenhuma registrada ainda)_
+- [[2026-11-11 Manter IUnitOfWork na Infrastructure]]
 
 ## Próximos passos
-- [ ] Decidir onde mora a interface `IUnitOfWork` (ver [[Unit of Work#Pontos de atenção]])
+- [x] Decidir onde mora a interface `IUnitOfWork`: fica na Infrastructure, ver [[2026-11-11 Manter IUnitOfWork na Infrastructure]]
