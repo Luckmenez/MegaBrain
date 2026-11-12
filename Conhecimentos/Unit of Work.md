@@ -47,11 +47,13 @@ salvaria um contexto que não sabe nada da despesa adicionada.
   o `CashFlow.Application` passou a referenciar a Infrastructure. Na arquitetura em camadas o
   normal é o contrário: a interface fica no **Domain** (igual a `IExpenseRepository`) e só a
   implementação fica na Infrastructure. Assim a Application não depende de detalhe de banco.
+  **Decidido:** manter como está, seguindo o curso. Ver [[2026-11-11 Manter IUnitOfWork na Infrastructure]].
 - O próprio `DbContext` do EF Core já é um Unit of Work. A interface `IUnitOfWork` serve
   para o caso de uso não depender do EF diretamente.
 
 ## Com minhas palavras
-_(escrito por mim, não pelo Claude)_
+A ideia de implementar esse tipo de prática é fazer com que a aplicação mantenha a atomicidade do ACID. Eu preparo as operações e faço o commit de uma vez só.
+Isso mantém o banco de dados mais organizado.
 
 ## Relacionados
 - [[Repository Pattern]]

@@ -16,7 +16,7 @@ Ponto de entrada do vault. Se uma nota não está ligada daqui (direta ou indire
 - [[Injeção de dependência]]
 
 ## Decisões
-_(nenhuma ainda)_
+- [[2026-11-11 Manter IUnitOfWork na Infrastructure]] ([[cash-flow]])
 
 ## Onde ficam as coisas fora do vault
 - **Regras do vault para o Claude:** `CLAUDE.md` (raiz deste vault)
