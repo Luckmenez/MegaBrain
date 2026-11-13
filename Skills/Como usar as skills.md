@@ -13,6 +13,7 @@ O que é uma skill: ver [[Skills do Claude Code]].
 |---|---|---|
 | [[Skills/registrar-no-cerebro/SKILL\|registrar-no-cerebro]] | Transformar o que aprendi numa sessão em nota aqui | `/registrar-no-cerebro` ou "registra isso no cérebro" |
 | [[Skills/revisar-conceito/SKILL\|revisar-conceito]] | O Claude me faz perguntas sobre um conceito e corrige | `/revisar-conceito Unit of Work` ou "me testa em DI" |
+| [[Skills/quebrar-historia-jira/SKILL\|quebrar-historia-jira]] | Quebrar uma história do Jira em tarefas de PR pequena, conferir a cobertura e escrever as descrições | `/quebrar-historia-jira` e colar a história e as tarefas (texto ou print) |
 
 ## Instalar numa máquina nova
 
