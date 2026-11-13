@@ -1,6 +1,7 @@
 ---
 tipo: projeto
 repo:
+pasta: ~/dev/
 status: ativo
 ---
 # {{title}}
