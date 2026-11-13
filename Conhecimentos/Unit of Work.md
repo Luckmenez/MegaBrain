@@ -1,7 +1,7 @@
 ---
 tipo: conceito
 area: .NET / EF Core
-projetos: [cash-flow]
+projetos: [cash-flow, cet-medicao]
 criado: 2026-11-11
 ---
 # Unit of Work
@@ -42,6 +42,26 @@ Isso acontece porque o `AddDbContext` registra o contexto como **scoped** (uma i
 requisição HTTP), ver [[Injeção de dependência]]. Se fossem instâncias diferentes, o `Commit`
 salvaria um contexto que não sabe nada da despesa adicionada.
 
+### No cet-medicao: a outra forma
+No [[cet-medicao]] (commit `a6ade20`), a interface está no **Dominio**, que é o lugar recomendado
+(ver [[Arquitetura em camadas]]). Ela também é diferente: em vez de `Commit()`, recebe a operação inteira e
+roda dentro de uma transação de verdade.
+
+```csharp
+// Dominio/Repositorios/IUnidadeDeTrabalho.cs
+Task<T> ExecutarEmTransacaoAsync<T>(Func<Task<T>> operacao, CancellationToken ct);
+
+// Infra/DataAccess/Repositorio/UnidadeDeTrabalho.cs
+await using IDbContextTransaction transacao = await db.Database.BeginTransactionAsync(ct);
+T resultado = await operacao();
+await transacao.CommitAsync(ct);   // se a operação lançar exceção, não chega aqui e o await using desfaz
+return resultado;
+```
+
+**Por que a diferença:** com `Commit()` = `SaveChanges()`, só as alterações *rastreadas* ficam juntas.
+Com `BeginTransactionAsync`, também ficam juntos vários `SaveChanges` e as **leituras** (o saldo lido
+fica travado até o commit). O envio de medição precisa disso: ver [[Dual write]].
+
 ## Pontos de atenção
 - **Onde fica a interface?** Hoje `IUnitOfWork` está em `CashFlow.Infrastructure`, e por isso
   o `CashFlow.Application` passou a referenciar a Infrastructure. Na arquitetura em camadas o
@@ -59,3 +79,4 @@ Isso mantém o banco de dados mais organizado.
 - [[Repository Pattern]]
 - [[DbContext]]
 - [[Injeção de dependência]]
+- [[Dual write]]
