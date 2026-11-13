@@ -1,6 +1,7 @@
 ---
 tipo: projeto
-repo: C:\Users\USER\dev\cash-flow
+repo: https://github.com/Luckmenez/cash-flow
+pasta: ~/dev/cash-flow
 status: ativo
 ---
 # cash-flow
