@@ -23,8 +23,8 @@ tarefas criadas (número + título). Pode vir em texto ou print.
 - **Olhe o código do repositório** da sessão antes de propor: o que já existe (endpoint, tela, tabela,
   janela de assinatura) muda a tarefa de "criar" para "ajustar". Se houver `docs/` com a especificação,
   leia a parte da história.
-- Se o projeto tem nota em `Projetos/` no vault MegaBrain (ache o vault pela variável `MEGABRAIN` ou pelo
-  `obsidian.json`, como em `registrar-no-cerebro`), leia: ela diz as camadas e o fluxo do contrato.
+- Se o projeto tem nota em `Projetos/` no vault MegaBrain (o vault fica em `~/.claude/megabrain`; se o atalho
+  não existir, ache como em `registrar-no-cerebro`), leia: ela diz as camadas e o fluxo do contrato.
 
 ## 1. Revisar a cobertura e a quebra (parada 1)
 
@@ -156,7 +156,7 @@ Moldes que costumam dar PRs pequenas. Adapte ao que a história pede.
 ## Estimar o tamanho
 
 Para cada tarefa, liste mentalmente os arquivos que ela cria ou altera, seguindo a estrutura do repositório
-(para C#, `Padrões/CSharp/Estrutura de pastas.md` no vault). Para calibrar, procure uma funcionalidade
+(as camadas estão na nota do projeto em `Projetos/`). Para calibrar, procure uma funcionalidade
 parecida já feita e veja quantos arquivos ela mexeu:
 
 ```bash
