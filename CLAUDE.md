@@ -45,9 +45,14 @@ Nunca escreva caminho absoluto de uma máquina (`C:\Users\fulano\...`). Use:
 | Pasta pessoal | `~` (no Windows é `%USERPROFILE%`, no Mac/Linux é `$HOME`) |
 | Repositório de um projeto | frontmatter `repo:` com a URL do GitHub e `pasta:` com o caminho a partir de `~`, ex. `~/dev/cash-flow` |
 | Skills globais do Claude | `~/.claude/skills/` |
-| Este vault | variável de ambiente `MEGABRAIN`; se não existir, o vault chamado `MegaBrain` no registro do Obsidian (ver abaixo) |
+| Este vault | `~/.claude/megabrain`, o atalho criado pelo `Skills/instalar.ps1` / `.sh` (ver abaixo) |
+| Nota do vault importada no `CLAUDE.md` de um projeto | `@~/.claude/megabrain/Projetos/nome-do-repo.md` |
 
-**Achar o vault sem saber o caminho:** o Obsidian guarda a lista de vaults em `obsidian.json`:
+**Achar o vault sem saber o caminho**, nesta ordem:
+1. `~/.claude/megabrain`: atalho para o vault, igual em todas as máquinas. É o único jeito que funciona
+   nos imports `@...` de um `CLAUDE.md`, que não leem variável de ambiente nem o `obsidian.json`.
+2. A variável de ambiente `MEGABRAIN`, se existir.
+3. O registro do Obsidian: ele guarda a lista de vaults em `obsidian.json`:
 - Windows: `%APPDATA%\obsidian\obsidian.json`
 - Mac: `~/Library/Application Support/obsidian/obsidian.json`
 - Linux: `~/.config/obsidian/obsidian.json`

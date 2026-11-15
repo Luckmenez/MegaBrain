@@ -23,11 +23,20 @@ O que é uma skill: ver [[Skills do Claude Code]].
    - Mac/Linux: `sh Skills/instalar.sh`
 3. Abra uma sessão nova do Claude Code: as skills aparecem na lista.
 
-O script cria um **atalho** (junction no Windows, link simbólico no Mac/Linux) de cada pasta daqui
-para `~/.claude/skills/`. Por isso, editar o `SKILL.md` no Obsidian já muda a skill, sem reinstalar.
+O script cria **atalhos** (junction no Windows, link simbólico no Mac/Linux):
 
-Opcional: defina a variável de ambiente `MEGABRAIN` com o caminho do vault. Sem ela, as skills acham o
-vault pelo registro do Obsidian (`obsidian.json`).
+| Atalho | Aponta para | Para quê |
+|---|---|---|
+| `~/.claude/skills/<skill>` | cada pasta de skill daqui | o Claude achar as skills. Editar o `SKILL.md` no Obsidian já muda a skill, sem reinstalar |
+| `~/.claude/megabrain` | a raiz deste vault | um **endereço fixo** para o vault, igual em todas as máquinas, não importa onde o vault foi clonado |
+
+O `CLAUDE.md` de um projeto importa a nota dele assim, e funciona em qualquer computador:
+
+```markdown
+@~/.claude/megabrain/Projetos/cash-flow.md
+```
+
+Se mudar o vault de pasta numa máquina, apague o atalho `~/.claude/megabrain` e rode o script de novo.
 
 ## Criar uma skill nova
 

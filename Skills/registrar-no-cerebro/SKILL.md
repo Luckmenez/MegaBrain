@@ -9,12 +9,13 @@ Leva o que aconteceu nesta conversa para o vault MegaBrain, sem encher o vault d
 
 ## 1. Achar o vault
 
-1. Se a variável de ambiente `MEGABRAIN` existir, é o caminho do vault.
-2. Senão, leia o `obsidian.json` do Obsidian e pegue o vault cujo `path` termina em `MegaBrain`:
+1. Se existir `~/.claude/megabrain` (atalho criado pelo `Skills/instalar`), é o vault.
+2. Senão, se a variável de ambiente `MEGABRAIN` existir, é o caminho do vault.
+3. Senão, leia o `obsidian.json` do Obsidian e pegue o vault cujo `path` termina em `MegaBrain`:
    - Windows: `%APPDATA%\obsidian\obsidian.json`
    - Mac: `~/Library/Application Support/obsidian/obsidian.json`
    - Linux: `~/.config/obsidian/obsidian.json`
-3. Se nada disso funcionar, pergunte o caminho ao Lucas.
+4. Se nada disso funcionar, pergunte o caminho ao Lucas.
 
 Depois **leia o `CLAUDE.md` da raiz do vault**: ele manda nas pastas, nos nomes e nas regras. Se algo aqui
 contradisser o `CLAUDE.md`, vale o `CLAUDE.md`.
