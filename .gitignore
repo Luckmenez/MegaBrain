@@ -2,3 +2,9 @@
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .trash/
+
+# Posts do LinkedIn: vídeo, GIF e fotos de conferência são gerados pelo gravar.mjs
+LinkedIn/**/*.mp4
+LinkedIn/**/*.gif
+LinkedIn/**/*.png
+LinkedIn/**/*-quadros/

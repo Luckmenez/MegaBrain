@@ -13,6 +13,7 @@ Explique de forma simples e sempre o **porquê**.
 | `Conhecimentos/` | Um conceito por nota (Unit of Work, DbContext...). | Nome do conceito, ex. `Unit of Work.md` |
 | `Decisões/` | Por que escolhi X e não Y. | `AAAA-MM-DD Título curto.md` |
 | `Diario/` | Uma nota por dia, o que fiz e aprendi. | `AAAA-MM-DD.md` |
+| `LinkedIn/` | Posts do LinkedIn: o registro em `Posts do LinkedIn.md` e uma pasta por post em `posts/` (arte + texto). | `posts/AAAA-MM-DD tema/` |
 | `Skills/` | Skills do Claude Code, uma pasta por skill (`Skills/nome/SKILL.md`). | `nome-em-kebab-case/` |
 | `Templates/` | Modelos das notas acima. Não guardar conteúdo aqui. | — |
 

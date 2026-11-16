@@ -1,0 +1,10 @@
+{
+  "name": "criar-post-linkedin-ferramentas",
+  "private": true,
+  "type": "module",
+  "description": "Grava as artes animadas (HTML + SVG) em MP4 e GIF usando o Chrome instalado na maquina.",
+  "dependencies": {
+    "ffmpeg-static": "5.2.0",
+    "puppeteer-core": "23.11.1"
+  }
+}

@@ -41,6 +41,9 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 - [[2026-11-04 Regras do envio na entidade antes da transação]] ([[cet-medicao]])
 - [[2026-10-26 Sessão de 24h e CET só no login]] ([[cet-medicao]])
 
+## LinkedIn
+- [[Posts do LinkedIn]]: posts com material de apoio animado, registro do que já fiz e ideias de tema
+
 ## Skills
 - [[Como usar as skills]]: o que tem, como chamar, como instalar numa máquina nova
 

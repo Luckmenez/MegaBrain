@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Unit of Work no supermercado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Bowlby+One&family=JetBrains+Mono:wght@500;700&display=block" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EEE2; --ink: #1E2A3A; --red: #E04F3A; --mustard: #F2A93B;
+    --teal: #2E9C8F; --green: #3FA66B;
+  }
+  html, body { margin: 0; background: #d9d4c7; }
+  body { display: flex; justify-content: center; }
+  svg { width: 1080px; height: 1350px; display: block; }
+
+  .hand { font-family: 'Architects Daughter', cursive; fill: var(--ink); }
+  .bold { stroke: var(--ink); stroke-width: 1.3; paint-order: stroke; }
+  .title { font-family: 'Bowlby One', sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+  .ink { stroke: var(--ink); stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+  .line { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .sep { fill: none; stroke: #8A94A3; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 0 14; }
+  .flow { fill: none; stroke: var(--ink); stroke-width: 6; stroke-linecap: round;
+          stroke-dasharray: 0 16; animation: flow 1s linear infinite; }
+  .arrow { fill: none; stroke: var(--red); stroke-width: 4; stroke-linecap: round; }
+  .node { fill: var(--mustard); stroke: var(--ink); stroke-width: 3.5; }
+
+  /* tudo que se move gira/escala em torno do próprio centro (0,0) */
+  .mv { transform-box: view-box; transform-origin: 0 0; }
+
+  @keyframes flow { to { stroke-dashoffset: -16; } }
+
+  /* ---------- Faixa 1: sem Unit of Work (ciclo de 8s) ---------- */
+  .b1i1 { animation: b1i1 8s linear infinite; }
+  .b1i2 { animation: b1i2 8s linear infinite; }
+  .b1i3 { animation: b1i3 8s linear infinite; }
+  @keyframes b1i1 {
+    0%, 3%   { transform: translate(340px, 400px); opacity: 1; animation-timing-function: ease-in-out; }
+    12%, 16% { transform: translate(605px, 432px); opacity: 1; animation-timing-function: ease-in; }
+    24%      { transform: translate(935px, 460px) scale(.4); opacity: 0; }
+    96%      { transform: translate(340px, 400px); opacity: 0; }
+    100%     { transform: translate(340px, 400px); opacity: 1; }
+  }
+  @keyframes b1i2 {
+    0%, 28%  { transform: translate(340px, 470px); opacity: 1; animation-timing-function: ease-in-out; }
+    37%, 41% { transform: translate(605px, 432px); opacity: 1; animation-timing-function: ease-in; }
+    49%      { transform: translate(935px, 460px) scale(.4); opacity: 0; }
+    96%      { transform: translate(340px, 470px); opacity: 0; }
+    100%     { transform: translate(340px, 470px); opacity: 1; }
+  }
+  @keyframes b1i3 {
+    0%, 53%  { transform: translate(340px, 540px); opacity: 1; animation-timing-function: ease-in-out; }
+    62%, 66% { transform: translate(605px, 432px); opacity: 1; animation-timing-function: ease-in; }
+    72%      { transform: translate(845px, 445px) rotate(0deg); opacity: 1; }
+    73.5%    { transform: translate(860px, 440px) rotate(10deg); opacity: 1; }
+    75%      { transform: translate(850px, 440px) rotate(-10deg); opacity: 1; animation-timing-function: ease-in; }
+    84%      { transform: translate(890px, 610px) rotate(80deg); opacity: 0; }
+    96%      { transform: translate(340px, 540px); opacity: 0; }
+    100%     { transform: translate(340px, 540px); opacity: 1; }
+  }
+  .beam1 { animation: beam1 8s linear infinite; }
+  @keyframes beam1 {
+    0%, 11.5% { opacity: 0; } 12%, 16% { opacity: 1; } 16.5%, 36.5% { opacity: 0; }
+    37%, 41%  { opacity: 1; } 41.5%, 61.5% { opacity: 0; } 62%, 66% { opacity: 1; } 66.5%, 100% { opacity: 0; }
+  }
+  .ok1 { animation: ok1 8s linear infinite; }
+  .ok2 { animation: ok2 8s linear infinite; }
+  .fail3 { animation: fail3 8s linear infinite; }
+  @keyframes ok1   { 0%, 23% { opacity: 0; } 24.5%, 95% { opacity: 1; } 98%, 100% { opacity: 0; } }
+  @keyframes ok2   { 0%, 48% { opacity: 0; } 49.5%, 95% { opacity: 1; } 98%, 100% { opacity: 0; } }
+  @keyframes fail3 { 0%, 73% { opacity: 0; } 74.5%, 95% { opacity: 1; } 98%, 100% { opacity: 0; } }
+  .warn { animation: warn 8s linear infinite; }
+  @keyframes warn {
+    0%, 75% { opacity: 0; transform: translate(0, 8px); }
+    78%, 95% { opacity: 1; transform: translate(0, 0); }
+    98%, 100% { opacity: 0; }
+  }
+
+  /* ---------- Faixa 2: com Unit of Work ---------- */
+  .cart { animation: cart 8s linear infinite; }
+  @keyframes cart {
+    0%, 34% { transform: translate(510px, 890px); opacity: 1; animation-timing-function: ease-in-out; }
+    47%, 90% { transform: translate(650px, 890px); opacity: 1; }
+    94%      { transform: translate(650px, 890px); opacity: 0; }
+    96%      { transform: translate(510px, 890px); opacity: 0; }
+    100%     { transform: translate(510px, 890px); opacity: 1; }
+  }
+  .b2i1 { animation: b2i1 8s linear infinite; }
+  .b2i2 { animation: b2i2 8s linear infinite; }
+  .b2i3 { animation: b2i3 8s linear infinite; }
+  @keyframes b2i1 {
+    0%, 3%   { transform: translate(340px, 810px); opacity: 1; animation-timing-function: ease-in-out; }
+    10%, 34% { transform: translate(482px, 862px) scale(.75); opacity: 1; animation-timing-function: ease-in-out; }
+    47%, 56% { transform: translate(622px, 862px) scale(.75); opacity: 1; animation-timing-function: ease-in; }
+    61%      { transform: translate(775px, 842px) scale(.3); opacity: 0; }
+    96%      { transform: translate(340px, 810px); opacity: 0; }
+    100%     { transform: translate(340px, 810px); opacity: 1; }
+  }
+  @keyframes b2i2 {
+    0%, 12%  { transform: translate(340px, 880px); opacity: 1; animation-timing-function: ease-in-out; }
+    19%, 34% { transform: translate(510px, 856px) scale(.75); opacity: 1; animation-timing-function: ease-in-out; }
+    47%, 56% { transform: translate(650px, 856px) scale(.75); opacity: 1; animation-timing-function: ease-in; }
+    61%      { transform: translate(775px, 842px) scale(.3); opacity: 0; }
+    96%      { transform: translate(340px, 880px); opacity: 0; }
+    100%     { transform: translate(340px, 880px); opacity: 1; }
+  }
+  @keyframes b2i3 {
+    0%, 21%  { transform: translate(340px, 950px); opacity: 1; animation-timing-function: ease-in-out; }
+    28%, 34% { transform: translate(538px, 862px) scale(.75); opacity: 1; animation-timing-function: ease-in-out; }
+    47%, 56% { transform: translate(678px, 862px) scale(.75); opacity: 1; animation-timing-function: ease-in; }
+    61%      { transform: translate(775px, 842px) scale(.3); opacity: 0; }
+    96%      { transform: translate(340px, 950px); opacity: 0; }
+    100%     { transform: translate(340px, 950px); opacity: 1; }
+  }
+  .beam2 { animation: beam2 8s linear infinite; }
+  @keyframes beam2 { 0%, 55.5% { opacity: 0; } 56%, 61% { opacity: 1; } 61.5%, 100% { opacity: 0; } }
+  .receipt { animation: receipt 8s linear infinite; }
+  @keyframes receipt {
+    0%, 60%  { transform: translate(775px, 835px) scale(.4); opacity: 0; }
+    62%, 64% { transform: translate(775px, 815px) scale(1); opacity: 1; animation-timing-function: ease-in; }
+    73%      { transform: translate(955px, 860px) scale(.5); opacity: 1; }
+    75%, 100% { transform: translate(955px, 860px) scale(.3); opacity: 0; }
+  }
+  .okAll { animation: okAll 8s linear infinite; }
+  @keyframes okAll { 0%, 73% { opacity: 0; } 75%, 95% { opacity: 1; } 98%, 100% { opacity: 0; } }
+  .glow { animation: glow 8s ease-out infinite; }
+  @keyframes glow {
+    0%, 73% { opacity: 0; transform: translate(960px, 880px) scale(.8); }
+    76%     { opacity: .9; transform: translate(960px, 880px) scale(1.05); }
+    90%     { opacity: 0; transform: translate(960px, 880px) scale(1.25); }
+    100%    { opacity: 0; }
+  }
+
+  /* ---------- Código: destaca a linha conforme a cena ---------- */
+  .hl1 { animation: hl1 8s linear infinite; }
+  .hl2 { animation: hl2 8s linear infinite; }
+  @keyframes hl1 { 0%, 1% { opacity: 0; } 3%, 30% { opacity: 1; } 33%, 100% { opacity: 0; } }
+  @keyframes hl2 { 0%, 47% { opacity: 0; } 50%, 76% { opacity: 1; } 79%, 100% { opacity: 0; } }
+</style>
+</head>
+<body>
+<svg id="art" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- traço "à mão": desloca levemente as bordas -->
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- granulado de papel -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.12  0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0.9 -0.35"/>
+    </filter>
+    <marker id="ah" viewBox="0 0 12 12" refX="8" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 L9 6 L1 11" fill="none" stroke="#E04F3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+
+    <!-- produtos, desenhados com o centro em (0,0) -->
+    <g id="milk" class="ink">
+      <rect x="-18" y="-14" width="36" height="42" fill="#8EC5D6"/>
+      <path d="M-18 -14 L-10 -28 L10 -28 L18 -14 Z" fill="#FFFFFF"/>
+      <rect x="-10" y="-34" width="20" height="6" fill="#FFFFFF"/>
+      <rect x="-18" y="2" width="36" height="11" fill="#FFFFFF"/>
+    </g>
+    <g id="cereal" class="ink">
+      <rect x="-20" y="-28" width="40" height="56" fill="#F2A93B"/>
+      <circle cx="0" cy="-4" r="9" fill="#E04F3A"/>
+      <path d="M-20 14 L20 14" />
+    </g>
+    <g id="can" class="ink">
+      <rect x="-16" y="-24" width="32" height="50" rx="5" fill="#E58FA0"/>
+      <rect x="-16" y="-6" width="32" height="13" fill="#FFFFFF"/>
+      <ellipse cx="0" cy="-24" rx="16" ry="5" fill="#F6CCD4"/>
+    </g>
+
+    <!-- prateleira (origem no canto superior esquerdo) -->
+    <g id="shelf" class="ink">
+      <rect x="0" y="0" width="120" height="230" fill="#E6D8BC"/>
+      <path d="M-6 70 L126 70 M-6 140 L126 140 M-6 210 L126 210" stroke-width="6"/>
+      <path d="M0 230 L0 244 M120 230 L120 244" stroke-width="5"/>
+    </g>
+
+    <!-- caixa do supermercado (centro do balcão em 0,0) -->
+    <g id="register">
+      <g class="ink">
+        <rect x="-68" y="0" width="136" height="58" rx="6" fill="#B9A7E0"/>
+        <path d="M-68 14 L68 14" />
+        <rect x="-48" y="-7" width="58" height="9" fill="#1E2A3A"/>
+        <path d="M44 0 L44 -28" stroke-width="5"/>
+        <rect x="24" y="-58" width="42" height="30" rx="4" fill="#2E9C8F"/>
+        <rect x="-54" y="26" width="12" height="9" fill="#FFFFFF"/>
+        <rect x="-36" y="26" width="12" height="9" fill="#FFFFFF"/>
+        <rect x="-18" y="26" width="12" height="9" fill="#FFFFFF"/>
+        <rect x="-54" y="40" width="12" height="9" fill="#FFFFFF"/>
+        <rect x="-36" y="40" width="12" height="9" fill="#FFFFFF"/>
+        <rect x="-18" y="40" width="12" height="9" fill="#FFFFFF"/>
+      </g>
+      <text x="45" y="-37" text-anchor="middle" class="mono" font-size="13" fill="#FFFFFF">R$</text>
+    </g>
+
+    <!-- banco de dados (centro em 0,0) -->
+    <g id="db" class="ink">
+      <path d="M-52 -55 L-52 60 A52 16 0 0 0 52 60 L52 -55 Z" fill="#9ED8CF"/>
+      <path d="M-52 -14 A52 16 0 0 0 52 -14 M-52 24 A52 16 0 0 0 52 24" fill="none"/>
+      <ellipse cx="0" cy="-55" rx="52" ry="16" fill="#CDEDE7"/>
+    </g>
+    <g id="slot"><circle r="12" fill="#FFFFFF" class="ink" stroke-width="3"/></g>
+    <g id="check"><circle r="12" fill="#3FA66B" class="ink" stroke-width="3"/>
+      <path d="M-6 0 L-2 5 L7 -5" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="cross"><circle r="12" fill="#E04F3A" class="ink" stroke-width="3"/>
+      <path d="M-5 -5 L5 5 M5 -5 L-5 5" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/></g>
+
+    <!-- carrinho (centro do cesto em 0,0) -->
+    <g id="cartShape" class="ink">
+      <path d="M-62 -48 L62 -48 L48 18 L-48 18 Z" fill="#FFFFFF" fill-opacity=".1"/>
+      <path d="M-30 -48 L-24 18 M0 -48 L0 18 M30 -48 L24 18 M-57 -18 L56 -18" fill="none" stroke-width="2.5"/>
+      <path d="M-62 -48 L-76 -64 L-94 -64" fill="none" stroke-width="5"/>
+      <path d="M-48 18 L-54 32 L54 32" fill="none"/>
+      <circle cx="-34" cy="42" r="9" fill="#1E2A3A"/>
+      <circle cx="38" cy="42" r="9" fill="#1E2A3A"/>
+    </g>
+
+    <!-- nota fiscal -->
+    <g id="receiptShape" class="ink">
+      <path d="M-20 -26 L20 -26 L20 22 L15 27 L10 22 L5 27 L0 22 L-5 27 L-10 22 L-15 27 L-20 22 Z" fill="#FFFFFF"/>
+      <path d="M-12 -14 L12 -14 M-12 -4 L12 -4 M-12 6 L4 6" fill="none" stroke-width="2.5"/>
+    </g>
+  </defs>
+
+  <!-- fundo: papel + granulado -->
+  <rect width="1080" height="1350" fill="#F3EEE2"/>
+  <rect width="1080" height="1350" filter="url(#grain)" opacity=".55"/>
+
+  <!-- título -->
+  <g class="title" text-anchor="middle" font-size="104">
+    <text x="548" y="150" fill="#2E9C8F" stroke="#1E2A3A" stroke-width="9" stroke-linejoin="round" paint-order="stroke">Unit of Work</text>
+    <text x="540" y="142" fill="#FFFFFF" stroke="#1E2A3A" stroke-width="9" stroke-linejoin="round" paint-order="stroke">Unit of Work</text>
+  </g>
+  <text x="540" y="205" text-anchor="middle" class="hand" font-size="36">explicado com um carrinho de supermercado</text>
+
+  <!-- divisórias pontilhadas -->
+  <path class="sep" d="M30 245 L1050 245 M30 655 L1050 655 M30 1075 L1050 1075 M258 255 L258 1065"/>
+
+  <!-- ================= FAIXA 1: SEM UNIT OF WORK ================= -->
+  <g text-anchor="middle">
+    <text x="140" y="420" class="hand bold" font-size="50">Sem</text>
+    <text x="140" y="462" class="hand bold" font-size="31">Unit of Work</text>
+    <text x="140" y="515" class="hand" font-size="25">cada item vai</text>
+    <text x="140" y="545" class="hand" font-size="25">sozinho ao caixa</text>
+  </g>
+
+  <use href="#shelf" x="280" y="360" filter="url(#rough)"/>
+  <path class="flow" d="M418 470 L548 470"/>
+  <path class="flow" d="M694 470 L878 470"/>
+  <circle class="node" cx="418" cy="470" r="9"/>
+  <circle class="node" cx="878" cy="470" r="9"/>
+  <text x="483" y="508" text-anchor="middle" class="mono" font-size="22" fill="#1E2A3A">Add()</text>
+
+  <g filter="url(#rough)"><use href="#register" x="620" y="470"/></g>
+  <path class="beam1" d="M-44 -7 L-30 -66 L8 -66 L6 -7 Z" transform="translate(620 470)" fill="#E04F3A" fill-opacity=".35"/>
+  <text x="620" y="562" text-anchor="middle" class="hand" font-size="26">caixa</text>
+
+  <g filter="url(#rough)"><use href="#db" x="940" y="470"/></g>
+  <use href="#slot" x="940" y="438"/><use href="#slot" x="940" y="476"/><use href="#slot" x="940" y="514"/>
+  <use href="#check" x="940" y="438" class="ok1"/>
+  <use href="#check" x="940" y="476" class="ok2"/>
+  <use href="#cross" x="940" y="514" class="fail3"/>
+  <text x="940" y="582" text-anchor="middle" class="hand" font-size="26">banco</text>
+
+  <!-- anotação fixa -->
+  <text x="790" y="300" text-anchor="middle" class="hand" font-size="26">cada Add() já vai</text>
+  <text x="790" y="330" text-anchor="middle" class="hand" font-size="26">direto pro banco</text>
+  <path class="arrow" marker-end="url(#ah)" d="M838 342 C 872 372, 850 428, 800 456"/>
+
+  <!-- produtos em movimento -->
+  <use href="#milk"   class="mv b1i1" filter="url(#rough)"/>
+  <use href="#cereal" class="mv b1i2" filter="url(#rough)"/>
+  <use href="#can"    class="mv b1i3" filter="url(#rough)"/>
+
+  <!-- anotação que aparece na falha -->
+  <g class="warn">
+    <text x="690" y="610" text-anchor="middle" class="hand bold" font-size="26" style="fill:#E04F3A;stroke:#E04F3A">o 3º falhou, mas 2 já foram gravados</text>
+    <text x="690" y="638" text-anchor="middle" class="hand" font-size="24" style="fill:#E04F3A">→ dados pela metade</text>
+  </g>
+
+  <!-- ================= FAIXA 2: COM UNIT OF WORK ================= -->
+  <g text-anchor="middle">
+    <text x="140" y="830" class="hand bold" font-size="50">Com</text>
+    <text x="140" y="872" class="hand bold" font-size="31">Unit of Work</text>
+    <text x="140" y="925" class="hand" font-size="25">tudo no carrinho,</text>
+    <text x="140" y="955" class="hand" font-size="25">um caixa só</text>
+  </g>
+
+  <use href="#shelf" x="280" y="770" filter="url(#rough)"/>
+  <path class="flow" d="M592 915 L716 915"/>
+  <path class="flow" d="M862 880 L898 880"/>
+  <circle class="node" cx="898" cy="880" r="9"/>
+
+  <g filter="url(#rough)"><use href="#register" x="790" y="880"/></g>
+  <path class="beam2" d="M-44 -7 L-30 -66 L8 -66 L6 -7 Z" transform="translate(790 880)" fill="#E04F3A" fill-opacity=".35"/>
+  <text x="790" y="972" text-anchor="middle" class="hand" font-size="26">caixa</text>
+  <text x="790" y="1002" text-anchor="middle" class="mono" font-size="22" fill="#1E2A3A">Commit()</text>
+
+  <circle class="glow" r="80" fill="#3FA66B" style="transform-box:view-box;transform-origin:0 0"/>
+  <g filter="url(#rough)"><use href="#db" x="960" y="880"/></g>
+  <use href="#slot" x="960" y="848"/><use href="#slot" x="960" y="886"/><use href="#slot" x="960" y="924"/>
+  <g class="okAll">
+    <use href="#check" x="960" y="848"/><use href="#check" x="960" y="886"/><use href="#check" x="960" y="924"/>
+  </g>
+  <text x="960" y="992" text-anchor="middle" class="hand" font-size="26">banco</text>
+  <text x="960" y="1030" text-anchor="middle" class="hand bold okAll" font-size="26" style="fill:#3FA66B;stroke:#3FA66B">1 ida só ✓</text>
+
+  <!-- produtos (atrás do cesto) e carrinho -->
+  <use href="#milk"   class="mv b2i1" filter="url(#rough)"/>
+  <use href="#cereal" class="mv b2i2" filter="url(#rough)"/>
+  <use href="#can"    class="mv b2i3" filter="url(#rough)"/>
+  <use href="#cartShape" class="mv cart" filter="url(#rough)"/>
+  <use href="#receiptShape" class="mv receipt" filter="url(#rough)"/>
+
+  <!-- anotações fixas -->
+  <text x="470" y="712" text-anchor="middle" class="hand" font-size="26">o carrinho é o DbContext:</text>
+  <text x="470" y="742" text-anchor="middle" class="hand" font-size="26">anota tudo e espera</text>
+  <path class="arrow" marker-end="url(#ah)" d="M548 754 C 590 784, 572 812, 536 830"/>
+
+  <text x="890" y="712" text-anchor="middle" class="hand" font-size="26">Commit() grava tudo</text>
+  <text x="890" y="742" text-anchor="middle" class="hand" font-size="26">de uma vez só</text>
+  <path class="arrow" marker-end="url(#ah)" d="M930 754 C 940 786, 880 798, 838 812"/>
+
+  <text x="560" y="1048" text-anchor="middle" class="hand" font-size="25">falhou? nada é gravado</text>
+
+  <!-- ================= CÓDIGO ================= -->
+  <g text-anchor="middle">
+    <text x="140" y="1150" class="hand bold" font-size="40">No</text>
+    <text x="140" y="1192" class="hand bold" font-size="40">código</text>
+  </g>
+  <rect x="285" y="1100" width="470" height="130" rx="14" fill="#1E2A3A" filter="url(#rough)"/>
+  <rect class="hl1" x="296" y="1124" width="448" height="38" rx="6" fill="#F2A93B" fill-opacity=".22"/>
+  <rect class="hl2" x="296" y="1170" width="448" height="38" rx="6" fill="#3FA66B" fill-opacity=".3"/>
+  <text x="308" y="1151" class="mono" font-size="23" fill="#E8EDF3"><tspan fill="#C792EA">await</tspan> _repository.<tspan fill="#FFCB6B">Add</tspan>(despesa);</text>
+  <text x="308" y="1197" class="mono" font-size="23" fill="#E8EDF3"><tspan fill="#C792EA">await</tspan> _unitOfWork.<tspan fill="#FFCB6B">Commit</tspan>();</text>
+
+  <text x="812" y="1122" class="hand" font-size="25">só põe no carrinho</text>
+  <path class="arrow" marker-end="url(#ah)" d="M838 1132 C 826 1150, 800 1146, 770 1143"/>
+  <text x="812" y="1236" class="hand" font-size="25">passa no caixa</text>
+  <path class="arrow" marker-end="url(#ah)" d="M838 1214 C 826 1196, 800 1192, 770 1190"/>
+
+  <!-- ================= RODAPÉ ================= -->
+  <rect x="0" y="1262" width="1080" height="88" fill="#1E2A3A"/>
+  <text x="48" y="1318" class="title" font-size="32" fill="#FFFFFF">Lucas Menezes</text>
+  <path d="M378 1282 L378 1330" stroke="#8A94A3" stroke-width="3" stroke-linecap="round"/>
+  <text x="402" y="1316" class="hand" font-size="28" style="fill:#F2A93B">C# · .NET · EF Core</text>
+</svg>
+
+<script>
+  // Usado pelo gravador: congela todas as animações num instante exato (ms).
+  window.setFrame = (ms) => {
+    for (const a of document.getAnimations()) { a.pause(); a.currentTime = ms; }
+  };
+  window.loopMs = 8000;
+</script>
+</body>
+</html>

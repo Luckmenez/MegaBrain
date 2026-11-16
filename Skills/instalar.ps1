@@ -43,3 +43,19 @@ Get-ChildItem -Path $origem -Directory | Where-Object { Test-Path (Join-Path $_.
         Write-Host "instalada $($_.Name)"
     }
 }
+
+# Skills com scripts em Node (pasta ferramentas/ com package.json): instala as dependencias.
+$node = Get-Command npm -ErrorAction SilentlyContinue
+Get-ChildItem -Path $origem -Directory | ForEach-Object {
+    $ferramentas = Join-Path $_.FullName 'ferramentas'
+    if (Test-Path (Join-Path $ferramentas 'package.json')) {
+        if (-not $node) {
+            Write-Host "AVISO     $($_.Name): instale o Node.js e rode o script de novo para usar os scripts dela."
+        } else {
+            Push-Location $ferramentas
+            npm install --silent --no-fund --no-audit | Out-Null
+            if ($LASTEXITCODE -eq 0) { Write-Host "npm ok    $($_.Name)/ferramentas" } else { Write-Host "ERRO      npm install em $ferramentas" }
+            Pop-Location
+        }
+    }
+}

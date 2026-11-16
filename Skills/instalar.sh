@@ -39,3 +39,16 @@ for pasta in "$origem"/*/; do
     echo "instalada $nome"
   fi
 done
+
+# Skills com scripts em Node (pasta ferramentas/ com package.json): instala as dependências.
+for pasta in "$origem"/*/ferramentas/; do
+  [ -f "$pasta/package.json" ] || continue
+  nome="$(basename "$(dirname "$pasta")")"
+  if ! command -v npm >/dev/null 2>&1; then
+    echo "AVISO     $nome: instale o Node.js e rode o script de novo para usar os scripts dela."
+  elif (cd "$pasta" && npm install --silent --no-fund --no-audit >/dev/null); then
+    echo "npm ok    $nome/ferramentas"
+  else
+    echo "ERRO      npm install em $pasta"
+  fi
+done

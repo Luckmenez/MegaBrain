@@ -14,6 +14,7 @@ O que é uma skill: ver [[Skills do Claude Code]].
 | [[Skills/registrar-no-cerebro/SKILL\|registrar-no-cerebro]] | Transformar o que aprendi numa sessão em nota aqui | `/registrar-no-cerebro` ou "registra isso no cérebro" |
 | [[Skills/revisar-conceito/SKILL\|revisar-conceito]] | O Claude me faz perguntas sobre um conceito e corrige | `/revisar-conceito Unit of Work` ou "me testa em DI" |
 | [[Skills/quebrar-historia-jira/SKILL\|quebrar-historia-jira]] | Quebrar uma história do Jira em tarefas de PR pequena, conferir a cobertura e escrever as descrições | `/quebrar-historia-jira` e colar a história e as tarefas (texto ou print) |
+| [[Skills/criar-post-linkedin/SKILL\|criar-post-linkedin]] | Criar o infográfico animado de um post do LinkedIn (MP4 e GIF) e revisar o texto que eu escrevo. Registro em [[Posts do LinkedIn]]. Precisa do Node e do Chrome | `/criar-post-linkedin` ou "quero postar sobre X" |
 | [[Skills/the-judge/SKILL\|the-judge]] | Revisar uma PR com evidência e mostrar no chat tudo o que ela acusa, com `arquivo:linha`. Só posta no GitHub se eu pedir (precisa do `gh` logado e do Python) | `/the-judge` ou "revise esse PR em português" |
 
 > [!note] the-judge é de terceiros
@@ -35,6 +36,9 @@ O que é uma skill: ver [[Skills do Claude Code]].
    - Windows: `powershell -ExecutionPolicy Bypass -File Skills\instalar.ps1`
    - Mac/Linux: `sh Skills/instalar.sh`
 3. Abra uma sessão nova do Claude Code: as skills aparecem na lista.
+
+Skills com pasta `ferramentas/` (hoje só a `criar-post-linkedin`) têm scripts em Node. O instalador roda
+`npm install` nelas se o Node estiver instalado; sem Node, ele avisa e segue com o resto.
 
 O script cria **atalhos** (junction no Windows, link simbólico no Mac/Linux):
 

@@ -1,0 +1,83 @@
+<!doctype html>
+<!--
+  Modelo de arte animada para o LinkedIn (1080x1350).
+  Copie para LinkedIn/posts/AAAA-MM-DD tema/arte.html e desenhe dentro do <svg>.
+  Exemplo completo e aprovado: LinkedIn/posts/2026-11-16 unit-of-work/arte.html
+
+  Contrato com o gravador:
+  - todo movimento é animação CSS (keyframes) com a mesma duração do ciclo, ou divisor dele;
+  - window.loopMs = duração do ciclo; window.setFrame(ms) congela tudo naquele instante.
+  Elementos que se movem: desenhe com o centro em (0,0) dentro de <defs>, use <use class="mv ...">
+  e mova com transform: translate(...) nos keyframes. Repita "opacity: 1" em todo quadro-chave
+  intermediário, senão a opacidade é interpolada e o objeto desbota no caminho.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>TÍTULO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Bowlby+One&family=JetBrains+Mono:wght@500;700&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; background: #d9d4c7; }
+  body { display: flex; justify-content: center; }
+  svg { width: 1080px; height: 1350px; display: block; }
+  .hand { font-family: 'Architects Daughter', cursive; fill: #1E2A3A; }
+  .bold { stroke: #1E2A3A; stroke-width: 1.3; paint-order: stroke; }
+  .title { font-family: 'Bowlby One', sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+  .ink { stroke: #1E2A3A; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+  .sep { fill: none; stroke: #8A94A3; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 0 14; }
+  .flow { fill: none; stroke: #1E2A3A; stroke-width: 6; stroke-linecap: round;
+          stroke-dasharray: 0 16; animation: flow 1s linear infinite; }
+  .arrow { fill: none; stroke: #E04F3A; stroke-width: 4; stroke-linecap: round; }
+  .node { fill: #F2A93B; stroke: #1E2A3A; stroke-width: 3.5; }
+  .mv { transform-box: view-box; transform-origin: 0 0; }
+  @keyframes flow { to { stroke-dashoffset: -16; } }
+
+  /* ciclo da cena: troque 8s se mudar window.loopMs */
+  /* .item1 { animation: item1 8s linear infinite; }
+     @keyframes item1 { 0% { transform: translate(300px, 400px); opacity: 1; } ... } */
+</style>
+</head>
+<body>
+<svg id="art" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.12  0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0.9 -0.35"/>
+    </filter>
+    <marker id="ah" viewBox="0 0 12 12" refX="8" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 L9 6 L1 11" fill="none" stroke="#E04F3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <!-- desenhos reutilizáveis aqui (centro em 0,0) -->
+  </defs>
+
+  <rect width="1080" height="1350" fill="#F3EEE2"/>
+  <rect width="1080" height="1350" filter="url(#grain)" opacity=".55"/>
+
+  <g class="title" text-anchor="middle" font-size="104">
+    <text x="548" y="150" fill="#2E9C8F" stroke="#1E2A3A" stroke-width="9" stroke-linejoin="round" paint-order="stroke">TÍTULO</text>
+    <text x="540" y="142" fill="#FFFFFF" stroke="#1E2A3A" stroke-width="9" stroke-linejoin="round" paint-order="stroke">TÍTULO</text>
+  </g>
+  <text x="540" y="205" text-anchor="middle" class="hand" font-size="36">subtítulo com a metáfora</text>
+
+  <!-- cena: desenhe aqui (faixas, metáfora, anotações à mão com setas vermelhas) -->
+
+  <rect x="0" y="1262" width="1080" height="88" fill="#1E2A3A"/>
+  <text x="48" y="1318" class="title" font-size="32" fill="#FFFFFF">Lucas Menezes</text>
+  <path d="M378 1282 L378 1330" stroke="#8A94A3" stroke-width="3" stroke-linecap="round"/>
+  <text x="402" y="1316" class="hand" font-size="28" style="fill:#F2A93B">TAGS</text>
+</svg>
+<script>
+  window.loopMs = 8000;
+  window.setFrame = (ms) => {
+    for (const a of document.getAnimations()) { a.pause(); a.currentTime = ms; }
+  };
+</script>
+</body>
+</html>
