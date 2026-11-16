@@ -67,7 +67,8 @@ a história não muda nada no banco". A frente Testes falta só por esquecimento
 | 181 | [Banco de dados] - Criar a estrutura da assinatura do Gestor | ~4 | — |
 | nova | [Backend] - Validar o encaminhamento da medição | ~6 | 181 |
 
-Marque as novas como `nova` e as que mudaram como `181 (ajustar título)`. Abaixo da tabela, uma linha
+Marque as novas como `nova`, as que mudaram como `181 (ajustar título)` e as que o código já entrega como
+`nova · já feita (PR #49)`. Abaixo da tabela, uma linha
 com as frentes: `Frentes: Backend ✓ · Frontend ✓ · Banco de dados ✓ · Testes ✓`.
 
 **Ordem.** Banco → back → front de integração; o front de layout com dados fixos anda em paralelo desde o
@@ -129,6 +130,10 @@ prefixo sem ` - `, tipo errado do item, tarefa fora da história, e se as condic
   fica com o fluxo inteiro, não com o acúmulo dos testes das outras (isso viraria a PR gigante).
 - Cada tarefa precisa poder ser mergeada sozinha: compila, os testes passam e não quebra o que existe
   (tela nova ainda sem link no menu, endpoint novo sem ninguém chamando).
+- **Tudo o que a história pede vira tarefa, mesmo o que já está pronto no código.** O trabalho é cobrado
+  da CET por história, e às vezes o time adianta coisas. Se o código já faz algo que um critério pede, a
+  tarefa entra na lista marcada **"já feita"**, com o commit ou a PR que entregou, em vez de sumir. Se está
+  feito pela metade, a tarefa entra como "ajustar". Nunca diga "não precisa de tarefa, já existe".
 
 ## Como quebrar cada frente
 
