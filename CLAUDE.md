@@ -36,6 +36,8 @@ O campo `area` do frontmatter usa um destes valores, que são também as seçõe
    Na dúvida, deixe um link para nota ainda não escrita em vez de criar a nota.
 8. **Projetos de trabalho:** este vault vai para o GitHub. Nada de senha, chave, connection string,
    dado de cliente ou nome de colega. Registre o conceito e a decisão, não o segredo.
+9. **Só a fonte vai para o git.** Arquivo gerado (vídeo, GIF, imagem de script, `node_modules`) fica
+   fora: o `.gitignore` da raiz explica cada caso. Ao criar algo que gera arquivo, adicione a regra lá.
 
 ## Caminhos (valem em qualquer máquina)
 

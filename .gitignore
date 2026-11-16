@@ -1,10 +1,31 @@
-# Estado da interface do Obsidian (muda toda hora, não é conteúdo)
+# O que NÃO sobe para o GitHub
+#
+# O vault vai para o GitHub (privado) para eu ter as notas nos 3 computadores.
+# Sobe só o que é "fonte": notas .md, skills, scripts e a arte em .html.
+# Fica de fora o que muda sozinho, o que é pesado e o que dá para gerar de novo.
+# Para conferir se um arquivo está sendo ignorado:  git check-ignore -v <arquivo>
+
+# --- Estado da interface do Obsidian (abas abertas, posição da tela): muda toda hora, não é conteúdo
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+
+# --- Lixeira do Obsidian
 .trash/
 
-# Posts do LinkedIn: vídeo, GIF e fotos de conferência são gerados pelo gravar.mjs
+# --- Dependências dos scripts (Node). O Skills/instalar.ps1 baixa de novo em cada máquina.
+node_modules/
+
+# --- Arquivos gerados: vídeo, GIF e imagens que os scripts criam a partir da fonte.
+# Posts do LinkedIn: a fonte é o arte.html; o MP4 e o GIF saem do gravar.mjs.
+# Para ter o vídeo em outro computador:
+#   node ~/.claude/megabrain/Skills/criar-post-linkedin/ferramentas/gravar.mjs "LinkedIn/posts/<post>/arte.html"
 LinkedIn/**/*.mp4
 LinkedIn/**/*.gif
 LinkedIn/**/*.png
 LinkedIn/**/*-quadros/
+
+# --- Segurança: nunca subir segredo, mesmo por engano
+.env
+.env.*
+*.pem
+*.key
