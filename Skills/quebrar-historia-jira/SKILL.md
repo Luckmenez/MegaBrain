@@ -110,6 +110,10 @@ MDC-181 e MDC-182.
 - Branch ou PR que já existe para a história (ex.: `feat/mdc-80-visualizar-pdf`). Omita se não houver.
 ```
 
+- **Entregue cada descrição dentro de um bloco de código ```markdown**, uma por bloco, com o título da
+  tarefa fora do bloco. Copiar o texto já formatado do chat perde bullets e títulos no Jira; o markdown
+  cru colado no editor do Jira Cloud vira título, bullet e negrito. O título fica fora porque já está no
+  campo de título da tarefa. Dentro do bloco, não use outro bloco de código: troque por `código em linha`.
 - **Condicional** e **Já feita / Ajustar** vão no topo do Resumo, nunca só no fim: é o que diz a quem pega a
   tarefa se ela pode começar.
 - **Fora do escopo** é seção própria, não item de "Outras informações".
