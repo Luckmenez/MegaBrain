@@ -1,6 +1,6 @@
 ---
 name: the-judge
-description: Evidence-first pull request judge that reviews a PR and posts one consolidated GitHub review with inline comments via the gh CLI. Runs the repo's own deterministic checks first, researches current official docs before any claim about external libraries or APIs, then reviews correctness, security, structural quality (code judo, spaghetti growth, file-size limits), and AI slop including useless code comments. Every finding must carry evidence, every comment passes a deterministic noise gate before posting, and the verdict (APPROVE, COMMENT, REQUEST_CHANGES) is weighed by findings. Use when asked to review a PR, judge this PR, review this branch or diff before merge, run the-judge, "revise esse PR", "faca o code review", or "julgue esse PR". Do NOT use for reviewing prose or documents, fixing CI failures, resolving merge conflicts, writing the fix itself, or responding to review comments (use gh-address-comments).
+description: Evidence-first pull request judge that reviews a PR and reports every finding in the chat with file:line (local change - it never posts to GitHub unless the user explicitly asks to post). Runs the repo's own deterministic checks first, researches current official docs before any claim about external libraries or APIs, then reviews correctness, security, structural quality (code judo, spaghetti growth, file-size limits), and AI slop including useless code comments. Every finding must carry evidence, every comment passes a deterministic noise gate before posting, and the verdict (APPROVE, COMMENT, REQUEST_CHANGES) is weighed by findings. Use when asked to review a PR, judge this PR, review this branch or diff before merge, run the-judge, "revise esse PR", "faca o code review", or "julgue esse PR". Do NOT use for reviewing prose or documents, fixing CI failures, resolving merge conflicts, writing the fix itself, or responding to review comments (use gh-address-comments).
 license: CC-BY-4.0
 metadata:
   author: Felipe Rodrigues - github.com/felipfr
@@ -139,7 +139,17 @@ python3 scripts/review_gate.py findings.json
 
 Fix every reported violation and re-run until exit code 0. The gate is deterministic; arguing with it is arguing with a regex.
 
-### Step 7: Post
+### Step 7: Report in the chat (local change - overrides the original Step 7)
+
+**Do not post to GitHub.** Show the review in the chat, in the language the user asked for:
+
+- The TL;DR with the verdict token.
+- A table of every finding: ID, severity emoji, `path:line` (as a clickable link), and the comment body.
+- The other summary sections (pre-existing, nit overflow, research log, checks run, skipped files).
+
+Then stop. Keep `findings.json` in the scratchpad. Only if the user explicitly asks to post it (for example "posta no GitHub") run the original step below, and show the exact payload before running it.
+
+Original Step 7, run only on request:
 
 ```bash
 python3 scripts/post_review.py findings.json
