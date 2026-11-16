@@ -79,29 +79,45 @@ Termine perguntando se fecha a lista. **Pare aqui.**
 ## 2. Escrever as descrições (parada 2)
 
 Só depois de ele fechar a lista. Uma por tarefa, na ordem de execução, todas no mesmo formato, prontas
-para colar:
+para colar. É o formato que o time usa no Jira (o mesmo que o Rovo produz), então ele cola sem retrabalho.
+Se ele já mandou o print com os números das tarefas, use os números; senão, `MDC-???`.
 
 ```markdown
 ### MDC-174 · [Backend] - Gravar a assinatura do Gestor e mudar a situação
 
-**Descrição**
-Uma ou duas frases: o que a tarefa entrega e onde (endpoint, tela, tabela). Se algo parecido já existe,
-diga para reaproveitar.
+## Resumo
+> **Condicional:** só se ... (a pergunta que decide). ← só em tarefa condicional, sempre na primeira linha
+> **Já feita:** entregue na PR #49 (commit abc1234). ← ou **Ajustar:** existe desde ..., falta ...
+O que a tarefa entrega, em uma ou duas frases de negócio.
 
-**Critérios de aceite**
+## Contexto
+Por que a tarefa existe: a regra ou o critério da história que ela cobre, o que já existe no código e
+deve ser reaproveitado, e um exemplo concreto quando ajudar (ex.: "saldo R$ 48.000,00 − medição
+R$ 9.595,25 = R$ 38.404,75").
+
+## Critérios de aceite
 - Comportamento observável, um por linha, com o código HTTP ou o texto exato da mensagem da história.
 - Caso de erro: "retorna 422 e não grava nada".
 - Testes de unidade desta tarefa entram nesta PR.
 
-**Fora do escopo**
+## Fora do escopo
 - O que parece fazer parte mas é de outra tarefa (com o número dela).
 
-**Depende de:** MDC-181 e a tarefa de validação.
+## Depende de
+MDC-181 e MDC-182.
+
+## Related resources
+- Branch ou PR que já existe para a história (ex.: `feat/mdc-80-visualizar-pdf`). Omita se não houver.
 ```
 
+- **Condicional** e **Já feita / Ajustar** vão no topo do Resumo, nunca só no fim: é o que diz a quem pega a
+  tarefa se ela pode começar.
+- **Fora do escopo** é seção própria, não item de "Outras informações".
+- Use um nome só para o sistema externo dentro da mesma tarefa (ex.: "GC" no título e no texto, não
+  "GC" num e "CET" no outro).
 - Título: `[Frente] - Verbo no infinitivo + o quê`. Frentes: `[Backend]`, `[Frontend]`, `[Banco de dados]`,
   `[Testes]`.
-- **Fora do escopo** é o que segura a PR pequena: sem ele, quem pega a tarefa "aproveita" e vai somando.
+- **Fora do escopo** segura a PR pequena: sem ele, quem pega a tarefa "aproveita" e vai somando.
 - Códigos HTTP e nomes de exceção: use os do projeto (olhe o tratador de exceções). Se não achou, diga
   que é sugestão.
 - Tarefa condicional ("só se o encaminhamento precisar chamar o GC") vai marcada como tal, com a pergunta
