@@ -13,7 +13,8 @@ O fluxo tem quatro paradas. Não pule para a próxima sem ele confirmar.
 ## 0. Antes de propor
 
 - Leia `LinkedIn/Posts do LinkedIn.md` no vault (`~/.claude/megabrain`): o registro do que já foi feito
-  (metáfora, layout, cor de destaque). **Não repita** metáfora nem layout dos últimos posts.
+  (metáfora, estilo, layout, cor de destaque). **Não repita** metáfora, e não repita o estilo do post
+  anterior (ver "Criatividade").
 - Se o tema veio do estudo dele (ex.: cash-flow), olhe o código e use os nomes reais
   (`_unitOfWork.Commit()`, não um nome inventado).
 - **Nada do trabalho (CET) vai para o post**: sem nome de cliente, de sistema, de tela ou regra de
@@ -96,28 +97,47 @@ O que eu sugeri e o que ele aceitou.
   rodapé, nome ou frase de outro perfil. O rodapé é o dele (`Lucas Menezes` + tags do tema).
 
 **Para não ter cara de gerado**
-- Papel com granulado, traço levemente tremido (filtro `rough`), letra de mão nas anotações,
-  setas vermelhas curvas, pontilhados.
+- Textura de verdade (papel, giz, cortiça...), traço levemente tremido (filtros `rough` ou `chalk`),
+  letra de mão nas anotações, setas vermelhas curvas, pontilhados.
 - Um ponto focal e uma metáfora, não 15 ícones. Assimetria e respiro são bem-vindos.
 - Evite: brilho neon, gradiente roxo-azul, ícone de engrenagem/cérebro/foguete, tudo centralizado e
   simétrico, título com emoji.
 
-**Criatividade**
+**Criatividade: assinatura fixa, estilo que roda**
 - Sempre 3 conceitos e sempre uma metáfora diferente das já registradas.
-- Varie também o layout e a cor de destaque entre posts seguidos. A base (papel, tinta azul-escura,
-  vermelho das anotações) é a identidade e fica.
+- No feed, o que se repete é ignorado. Por isso só a **assinatura** é fixa: o rodapé com
+  `Lucas Menezes` (fonte `Bowlby One`) e as **setas/anotações em vermelho**. Todo o resto muda.
+- **Nunca o mesmo estilo em dois posts seguidos** (confira a coluna "Estilo" do registro). Varie
+  também a composição (faixas, colunas, diagonal, objeto central, grade) e a fonte do título.
+- Na parada 1, diga o estilo de cada conceito.
+
+| Estilo | Cara | Fontes (Google Fonts) | Bom para |
+|---|---|---|---|
+| **Caderno** | papel creme com granulado, tinta azul-escura, traço tremido | Bowlby One + Architects Daughter | metáfora do dia a dia |
+| **Lousa** | quadro verde, giz (filtro `chalk`), moldura e bandeja de madeira, apagador | Cabin Sketch + Patrick Hand | "aula", comparação lado a lado |
+| **Blueprint** | fundo azul, linhas brancas finas, cotas e grade de engenharia | Share Tech Mono / Saira Condensed | arquitetura, camadas, estrutura |
+| **Pôster retrô** | 2 ou 3 cores chapadas, impressão desalinhada (risografia), tipografia enorme | Anton / Rubik Mono One | uma ideia forte, frase de impacto |
+| **Isométrico** | blocos 3D com sombra chapada, fundo claro liso | Fredoka + Nunito | fluxos, filas, processamento |
+| **Post-its** | quadro de cortiça, notas coloridas, alfinetes e barbante | Caveat + Kalam | listas, "5 erros", checklists |
+
+Exemplos prontos: caderno em `LinkedIn/posts/2026-11-16 unit-of-work/arte.html`; lousa em
+`LinkedIn/posts/2026-11-16 tempos-de-vida-di/arte.html` (colunas, filtro de giz, apagador).
 
 **Legibilidade**: no celular a arte aparece com ~1/3 do tamanho. Texto com no mínimo 22 px no
 1080×1350, frases curtas, contraste forte.
 
-**Canva**: se ele pedir pelo Canva, use o conector (cria, edita e exporta, mas **não anima**).
-Se algo não der pelo Canva, pare e pergunte antes de ir para o HTML.
+**Canva**: os infográficos animados são feitos em código. Testamos em 2026-11-16: o conector cria,
+edita e exporta, mas **não anima**, e o que ele gera sozinho tem cara de IA. Ele pode servir para
+agendar posts (planejador do Pro) ou para um carrossel que o Lucas queira editar à mão. Se ele pedir
+pelo Canva e algo não der, pare e pergunte antes de ir para o HTML.
 
 **Técnico** (detalhes nos comentários de `modelo.html`):
 - Todo movimento em keyframes CSS, com o ciclo igual a `window.loopMs`, para o vídeo repetir sem emenda.
 - Objeto que se move: desenhado com centro em (0,0) e movido com `translate`. Repita `opacity: 1`
   nos quadros-chave intermediários, senão ele desbota no caminho.
-- Fontes do Google Fonts (`Bowlby One` no título, `Architects Daughter` na mão, `JetBrains Mono` no código).
+- Fontes do Google Fonts, conforme o estilo (tabela em "Criatividade"); `JetBrains Mono` no código.
+- Para mudar o tamanho de uma cena inteira, envolva-a num `<g transform="translate(...) scale(...)">`:
+  os keyframes continuam valendo, porque são relativos ao grupo.
 
 **Git**: `arte.html` e `post.md` vão para o vault. `mp4`, `gif` e as fotos `png` ficam fora do git
 (são gerados de novo com o `gravar.mjs`).

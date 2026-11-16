@@ -12,12 +12,17 @@ Cada post tem uma pasta em `LinkedIn/posts/AAAA-MM-DD tema/` com `arte.html` (a 
 
 ## Registro
 
-Antes de propor um post novo, o Claude lê esta tabela para **não repetir** metáfora nem layout.
+Antes de propor um post novo, o Claude lê esta tabela para **não repetir** metáfora e para não usar
+o mesmo **estilo** do post anterior (estilos na skill: caderno, lousa, blueprint, pôster retrô,
+isométrico, post-its).
 
-| Data | Tema | Metáfora | Layout | Destaque | Status |
-|---|---|---|---|---|---|
-| 2026-11-16 | [[LinkedIn/posts/2026-11-16 unit-of-work/post\|Unit of Work]] | carrinho de supermercado e caixa | 2 faixas (sem × com) + código | teal + mostarda | rascunho |
+| Data | Tema | Metáfora | Estilo | Layout | Destaque | Status |
+|---|---|---|---|---|---|---|
+| 2026-11-16 | [[LinkedIn/posts/2026-11-16 unit-of-work/post\|Unit of Work]] | carrinho de supermercado e caixa | caderno | 2 faixas (sem × com) + código | teal + mostarda | rascunho |
+| 2026-11-16 | [[LinkedIn/posts/2026-11-16 tempos-de-vida-di/post\|Tempos de vida na DI]] | copo, caneca e garrafa do escritório | lousa | 3 colunas + contadores + código | azul-céu + rosa (giz) | rascunho |
 
 ## Ideias de tema
 - async/await: o garçom que atende outras mesas enquanto a cozinha prepara
-- Injeção de dependência: tomada (interface) e plugues (implementações)
+- Injeção de dependência (série):
+  - por que usar DI: o chef e o fornecedor (diagonal antes/depois)
+  - trocar a implementação nos testes: ensaio e estreia no teatro (objeto central)
