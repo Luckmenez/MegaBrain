@@ -23,6 +23,10 @@ O que é uma skill: ver [[Skills do Claude Code]].
 >
 > **Mudança minha:** o Passo 7 original postava a review direto no GitHub. Aqui ele mostra tudo no chat
 > e só posta se eu pedir ("posta no GitHub"). A `description` também foi ajustada. Se atualizar a skill, refaça essa mudança.
+>
+> **Formato no chat:** cada apontamento vem como um comentário de revisor de verdade: `📍 caminho · linha`,
+> o trecho de código daquela linha e um comentário em linguagem de colega, com a sugestão de correção.
+> No fim vem um "Resumo da revisão" dizendo o que precisa corrigir antes do merge e o que pode esperar.
 
 ## Instalar numa máquina nova
 

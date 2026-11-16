@@ -141,11 +141,41 @@ Fix every reported violation and re-run until exit code 0. The gate is determini
 
 ### Step 7: Report in the chat (local change - overrides the original Step 7)
 
-**Do not post to GitHub.** Show the review in the chat, in the language the user asked for:
+**Do not post to GitHub.** Show the review in the chat, in the language the user asked for, written as a human reviewer would leave it on the PR. No findings table: wide tables with long cells are unreadable in the chat.
 
-- The TL;DR with the verdict token.
-- A table of every finding: ID, severity emoji, `path:line` (as a clickable link), and the comment body.
-- The other summary sections (pre-existing, nit overflow, research log, checks run, skipped files).
+For every finding, most severe first, one block separated by `---`:
+
+````markdown
+**📍 `path/do/arquivo.cs` · linha 142**
+
+```csharp
+the exact line(s) from the PR at that location, copied verbatim
+```
+
+> 🟠 Conversational comment, in first person, as a colleague: what happens, with the concrete
+> input and result ("uma medição de 1,235 vai aparecer como 1,24"), why it matters, and the
+> evidence in plain words ("fiz um teste rápido e saiu `"1,24"`").
+>
+> The suggested fix, phrased as a suggestion ("acho que trocar para ... resolve", "que tal ...?").
+````
+
+Writing rules for the comment:
+
+- Full path from the repo root plus the line, so the user can find it in the PR. The code block is the real line from the PR, not a paraphrase.
+- Severity emoji first. 🟠/🔴 say clearly that it should be fixed before merge; 🟡 says it can wait ("não é urgente", "pode ficar para depois").
+- Plain, friendly sentences, no review jargon, no IDs like F1, no evidence lists. Cite the other `file:line` inline in the sentence when it proves the point (duplication, canonical helper).
+- The nit overflow is not hidden: show it as another 🟡 block.
+
+After the findings, close with one block:
+
+```markdown
+**Resumo da revisão**
+
+> Two to four sentences: what is good about the PR, the build/test numbers, and which points
+> must be fixed before merge versus which can wait. The verdict token in parentheses.
+```
+
+Then, in a short line outside the review, mention only what did not run (checks skipped, gate not run) and where `findings.json` is. The research log stays in `findings.json` and is shown only if the user asks.
 
 Then stop. Keep `findings.json` in the scratchpad. Only if the user explicitly asks to post it (for example "posta no GitHub") run the original step below, and show the exact payload before running it.
 
