@@ -18,7 +18,7 @@ isométrico, post-its).
 
 | Data | Tema | Metáfora | Estilo | Layout | Destaque | Status |
 |---|---|---|---|---|---|---|
-| 2026-11-16 | [[LinkedIn/posts/2026-11-16 unit-of-work/post\|Unit of Work]] | carrinho de supermercado e caixa | caderno | 2 faixas (sem × com) + código | teal + mostarda | rascunho |
+| 2026-11-16 | [[LinkedIn/posts/2026-11-16 unit-of-work/post\|Unit of Work]] | carrinho de supermercado e caixa | caderno | 2 faixas (sem × com) + código | teal + mostarda | publicado 2026-11-16 |
 | 2026-11-16 | [[LinkedIn/posts/2026-11-16 tempos-de-vida-di/post\|Tempos de vida na DI]] | copo, caneca e garrafa do escritório | lousa | 3 colunas + contadores + código | azul-céu + rosa (giz) | rascunho |
 
 ## Ideias de tema
