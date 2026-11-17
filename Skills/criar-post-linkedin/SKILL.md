@@ -15,8 +15,9 @@ O fluxo tem quatro paradas. Não pule para a próxima sem ele confirmar.
 - Leia `LinkedIn/Posts do LinkedIn.md` no vault (`~/.claude/megabrain`): o registro do que já foi feito
   (metáfora, estilo, layout, cor de destaque). **Não repita** metáfora, e não repita o estilo do post
   anterior (ver "Criatividade").
-- Se o tema veio do estudo dele (ex.: cash-flow), olhe o código e use os nomes reais
-  (`_unitOfWork.Commit()`, não um nome inventado).
+- **Exemplos genéricos, nunca o projeto dele.** Quem lê não conhece o cash-flow nem nenhum repositório
+  do Lucas: nada de nome de projeto ou classe dele na arte. Use nomes que qualquer um entende
+  (`IPedidoRepository`, `IEnviaEmail`). O código dele pode inspirar o tema, mas não aparece.
 - **Nada do trabalho (CET) vai para o post**: sem nome de cliente, de sistema, de tela ou regra de
   negócio de lá. Conceito genérico, sim; o caso do trabalho, não.
 
@@ -123,8 +124,13 @@ O que eu sugeri e o que ele aceitou.
 Exemplos prontos: caderno em `LinkedIn/posts/2026-11-16 unit-of-work/arte.html`; lousa em
 `LinkedIn/posts/2026-11-16 tempos-de-vida-di/arte.html` (colunas, filtro de giz, apagador).
 
-**Legibilidade**: no celular a arte aparece com ~1/3 do tamanho. Texto com no mínimo 22 px no
-1080×1350, frases curtas, contraste forte.
+**Legibilidade vem antes da textura.** Quem está aprendendo precisa ler o termo técnico de primeira.
+- No celular a arte aparece com ~1/3 do tamanho. Texto com no mínimo 24 px no 1080×1350, frases
+  curtas, contraste forte.
+- **Nome técnico e código** (`AddScoped`, `Commit()`, `#1`) em destaque: mono, negrito, 26 px ou mais,
+  cor forte. Textura pesada (filtro `chalk` cheio, granulado forte) só nos desenhos. No texto, use a
+  versão leve (`chalkText` na lousa).
+- Ao conferir as fotos, pergunte: "dá para ler o termo principal sem dar zoom?"
 
 **Canva**: os infográficos animados são feitos em código. Testamos em 2026-11-16: o conector cria,
 edita e exporta, mas **não anima**, e o que ele gera sozinho tem cara de IA. Ele pode servir para

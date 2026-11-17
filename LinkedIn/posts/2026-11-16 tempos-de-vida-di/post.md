@@ -26,8 +26,10 @@ Unit of Work.
   na reunião 2 nasce a `#2`. "mesma reunião, mesma caneca (o DbContext é assim)". Fim: 2 canecas.
 - **Singleton** (`AddSingleton`): a garrafa `#1` serve todo mundo. "a mesma para todo mundo,
   cuidado: acesso simultâneo". Fim: 1 garrafa.
-- **Código:** `services.AddScoped<IExpenseRepository, ExpenseRepository>();` (nomes reais do
-  cash-flow), "no meu cash-flow: a caneca da reunião".
+- **Código:** os 3 registros com exemplo genérico, alinhados:
+  `AddTransient<IEnviaEmail, EnviaEmail>()`, `AddScoped<IPedidoRepository, PedidoRepository>()` e
+  `AddSingleton<IConfiguracao, Configuracao>()`. Sem citar o cash-flow (quem lê não conhece).
+- **Legibilidade:** giz leve (`chalkText`) nos textos e nos números; `AddX` em mono negrito, 29 px.
 - **Ciclo:** 10 s; no fim, um apagador passa pelos contadores. O MP4 tem 3 ciclos (30 s).
 
 ## Texto do post (escrito pelo Lucas)
