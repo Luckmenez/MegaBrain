@@ -15,7 +15,7 @@ O que é uma skill: ver [[Skills do Claude Code]].
 | [[Skills/revisar-conceito/SKILL\|revisar-conceito]] | O Claude me faz perguntas sobre um conceito e corrige | `/revisar-conceito Unit of Work` ou "me testa em DI" |
 | [[Skills/quebrar-historia-jira/SKILL\|quebrar-historia-jira]] | Quebrar uma história do Jira em tarefas de PR pequena, conferir a cobertura e escrever as descrições | `/quebrar-historia-jira` e colar a história e as tarefas (texto ou print) |
 | [[Skills/criar-post-linkedin/SKILL\|criar-post-linkedin]] | Criar o infográfico animado de um post do LinkedIn (MP4 e GIF) e revisar o texto que eu escrevo. Registro em [[Posts do LinkedIn]]. Precisa do Node e do Chrome | `/criar-post-linkedin` ou "quero postar sobre X" |
-| [[Skills/the-judge/SKILL\|the-judge]] | Revisar uma PR com evidência e mostrar no chat tudo o que ela acusa, com `arquivo:linha`. Só posta no GitHub se eu pedir (precisa do `gh` logado e do Python) | `/the-judge` ou "revise esse PR em português" |
+| [[Skills/the-judge/SKILL\|the-judge]] | Revisar uma PR com evidência e mostrar no chat tudo o que ela acusa, com `arquivo:linha`. Só posta no GitHub se eu pedir. Lê a PR só com git, sem `gh`; o `gh` logado só é preciso para postar | `/the-judge` ou "revise esse PR em português" |
 
 > [!note] the-judge é de terceiros
 > Copiada de `tech-leads-club/agent-skills` (autor Felipe Rodrigues, licença CC-BY-4.0), versão 1.4.0,
@@ -28,6 +28,11 @@ O que é uma skill: ver [[Skills do Claude Code]].
 > **Formato no chat:** cada apontamento vem como um comentário de revisor de verdade: `📍 caminho · linha`,
 > o trecho de código daquela linha e um comentário em linguagem de colega, com a sugestão de correção.
 > No fim vem um "Resumo da revisão" dizendo o que precisa corrigir antes do merge e o que pode esperar.
+>
+> **Sem `gh` (Passo 0b):** a PR é buscada pelo git (`refs/pull/N/head` e `refs/pull/N/merge`), no meu clone
+> ou num clone na pasta temporária, sem mexer nos meus branches. A base certa vem da ref de merge. Em PR
+> empilhada, revisa só o commit novo. Build e testes rodam numa cópia exportada. Sem Python, os scripts
+> viram grep e conferência à mão, e o relatório avisa.
 
 ## Instalar numa máquina nova
 

@@ -60,6 +60,23 @@ No previous review: this is round 1, run the full workflow. Previous review exis
 
 If the diff exceeds roughly 400 changed lines in core files and the harness supports subagents, run the Step 3 passes as parallel subagents. Otherwise run them sequentially. Never make subagent support a requirement.
 
+### Step 0b: Without gh (local change)
+
+Reading a PR does not need `gh`. Since the review is shown in the chat (Step 7), use plain git with the user's own git credentials when `gh` is missing or not logged in. Only posting (on request) needs `gh`.
+
+1. **Find a clone.** Use the user's local clone of the repo when there is one (match `git remote get-url origin`). Otherwise check access with `git ls-remote <remote> 'refs/pull/<N>/*'` and make a fresh `git clone --no-checkout` in the scratchpad. Never check out, reset or switch branches in the user's own clone.
+2. **Fetch the PR into private refs**, never into the user's branches:
+
+   ```bash
+   git fetch origin 'refs/pull/<N>/head:refs/pr/<N>' 'refs/pull/<N>/merge:refs/pr/<N>-merge'
+   ```
+
+3. **Find the real base.** `refs/pull/<N>/merge` exists while the PR is open and mergeable; its first parent is the tip of the base branch: `BASE=$(git rev-parse refs/pr/<N>-merge^1)`. Without a merge ref, compare `git rev-list --count` against the likely bases (`origin/develop`, `origin/main`) and pick the one the PR is ahead of with zero behind.
+4. **Stacked PRs.** If the PR contains another PR's commits (`git merge-base --is-ancestor refs/pr/<M> refs/pr/<N>`), review only what this PR adds (`git diff refs/pr/<M> refs/pr/<N>`, or `$BASE..refs/pr/<N>` when the base already is the previous PR). Findings from the earlier PR that still hold are raised again at their new location, saying they come from the earlier PR, without re-reviewing its code. Tell the user when the base includes a PR not reviewed yet.
+5. **Diff and files** come from `git log $BASE..refs/pr/<N>`, `git diff --stat` and `git show refs/pr/<N>:<path>`. Read the PR author and title from the commit metadata; the PR description is not available, so Pass E covers only what the commits and code claim.
+6. **Round detection** needs the GitHub reviews API: without `gh`, treat it as round 1 and say so.
+7. **Build and tests** run on an export of the PR (`git archive refs/pr/<N> | tar -x -C <scratchpad>/prN`), never in the user's working tree. Installing dependencies (npm, browsers, images) is a download: ask first.
+
 ### Step 1: Deterministic ladder
 
 Detect and run the repo's own checks: lint, typecheck, and tests focused on changed files (look at `package.json` scripts, `Makefile`, `pyproject.toml`, CI config). If the repo already runs security scanners (dependency, IaC, or SAST tools wired into its CI), run them or read their current output as deterministic input too. Record results. Findings these tools produce are excluded from your review scope; you judge only what they cannot. If the repo has no such tooling, note that in the summary and move on; do not install anything.
@@ -69,6 +86,8 @@ Then run the deterministic bypass scan:
 ```bash
 gh pr diff <number> | python3 scripts/scan_bypasses.py
 ```
+
+Without `gh`, feed it `git diff $BASE refs/pr/<N>`. On Windows the interpreter is usually `python` (not `python3`); if there is no real Python at all (only the Microsoft Store alias), apply the same regexes from `scripts/scan_bypasses.py` with `grep -E` over the added lines, and do the same for `scripts/review_gate.py` by checking its rules by hand (no em/en dash, no `!`, banned words and phrases, emoji first, verdict token in the TL;DR). Say in the report that the scripts did not run.
 
 It prints `path:line  category  content` for every bypass marker added by the diff (suppression directives, dodged tests, TLS and type-check bypasses, swallowed errors, sleep-as-synchronization). Scan hits are candidates for Pass F, not findings: a suppression carrying a justification and an issue link is acceptable; a naked one is not. The scan exists so zero LLM tokens are spent detecting what a regex detects.
 
@@ -269,7 +288,7 @@ Solution: `post_review.py` auto-falls back to COMMENT for own PRs. For anchor fa
 
 ### Error: gh not authenticated
 Cause: no `gh auth login` session.
-Solution: ask the user to run `gh auth status` and authenticate. Do not attempt tokenless calls.
+Solution: for reading the PR, follow Step 0b (plain git) and keep going. Only for posting, ask the user to run `gh auth status` and authenticate. Do not attempt tokenless calls to the GitHub API.
 
 ### Error: no PR for the current branch
 Cause: branch never pushed or PR not opened.
