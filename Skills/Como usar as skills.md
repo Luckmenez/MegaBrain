@@ -28,6 +28,9 @@ O que é uma skill: ver [[Skills do Claude Code]].
 > **Formato no chat:** cada apontamento vem como um comentário de revisor de verdade: `📍 caminho · linha`,
 > o trecho de código daquela linha e um comentário em linguagem de colega, com a sugestão de correção.
 > No fim vem um "Resumo da revisão" dizendo o que precisa corrigir antes do merge e o que pode esperar.
+> O Passo 7 traz um exemplo real como modelo e regras de vocabulário (falar como colega, explicar em vez de
+> usar jargão, exemplo concreto, sugerir em vez de mandar). A `description` também descreve esse formato, e
+> uma nota no Passo 5 deixa claro que o tom seco do `comment-voice.md` vale só para o `findings.json`.
 >
 > **Sem `gh` (Passo 0b):** a PR é buscada pelo git (`refs/pull/N/head` e `refs/pull/N/merge`), no meu clone
 > ou num clone na pasta temporária, sem mexer nos meus branches. A base certa vem da ref de merge. Em PR

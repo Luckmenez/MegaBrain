@@ -1,6 +1,6 @@
 ---
 name: the-judge
-description: Evidence-first pull request judge that reviews a PR and reports every finding in the chat with file:line (local change - it never posts to GitHub unless the user explicitly asks to post). Runs the repo's own deterministic checks first, researches current official docs before any claim about external libraries or APIs, then reviews correctness, security, structural quality (code judo, spaghetti growth, file-size limits), and AI slop including useless code comments. Every finding must carry evidence, every comment passes a deterministic noise gate before posting, and the verdict (APPROVE, COMMENT, REQUEST_CHANGES) is weighed by findings. Use when asked to review a PR, judge this PR, review this branch or diff before merge, run the-judge, "revise esse PR", "faca o code review", or "julgue esse PR". Do NOT use for reviewing prose or documents, fixing CI failures, resolving merge conflicts, writing the fix itself, or responding to review comments (use gh-address-comments).
+description: Evidence-first pull request judge that reviews a PR and reports every finding in the chat (local change - it never posts to GitHub unless the user explicitly asks to post). In the chat each finding is one block - "📍 path · linha N", the real code from that line, then a comment written like a colleague talking (plain everyday words, first person, concrete example, suggested fix) - and the review closes with a "Resumo da revisão"; the terse gate style is only for findings.json. Runs the repo's checks first, checks official docs before any claim about libraries, reviews correctness, security, structure and AI slop; every finding needs evidence; verdict APPROVE, COMMENT or REQUEST_CHANGES. Use when asked to review a PR, judge this PR, review this branch or diff before merge, run the-judge, "revise esse PR", "faca o code review", or "julgue esse PR". Do NOT use for prose or documents, fixing CI, merge conflicts, writing the fix itself, or answering review comments.
 license: CC-BY-4.0
 metadata:
   author: Felipe Rodrigues - github.com/felipfr
@@ -123,6 +123,8 @@ Two grounding rules:
 
 **Read `references/comment-voice.md` now.** Write the summary and every comment body under that spec. Produce `findings.json`:
 
+> Local change: `comment-voice.md` defines the terse voice of the bodies inside `findings.json` (the ones the gate checks and that would be posted). It does **not** define the voice of the review shown in the chat: that one follows Step 7, and Step 7 wins when the two disagree.
+
 ```json
 {
   "language": "en",
@@ -160,29 +162,44 @@ Fix every reported violation and re-run until exit code 0. The gate is determini
 
 ### Step 7: Report in the chat (local change - overrides the original Step 7)
 
-**Do not post to GitHub.** Show the review in the chat, in the language the user asked for, written as a human reviewer would leave it on the PR. No findings table: wide tables with long cells are unreadable in the chat.
+**Do not post to GitHub.** Show the review in the chat, in the language the user asked for, written as a human reviewer would leave it on the PR. **This structure is fixed: always use it, never a table, a list of IDs or the terse `findings.json` bodies.** Wide tables with long cells are unreadable in the chat.
 
-For every finding, most severe first, one block separated by `---`:
+Open with one or two sentences: the verdict and what the PR does. Then, for every finding, most severe first, one block separated by `---`, exactly in this shape. This is a real block from a past review; copy its structure and its tone:
 
 ````markdown
-**📍 `path/do/arquivo.cs` · linha 142**
+**📍 `web/e2e/menu.spec.ts` · linha 54**
 
-```csharp
-the exact line(s) from the PR at that location, copied verbatim
+```ts
+await expect(menu(page).getByText('A', { exact: true })).toBeVisible();
+await expect(menu(page).getByText(USUARIO, { exact: true })).toBeVisible();
 ```
 
-> 🟠 Conversational comment, in first person, as a colleague: what happens, with the concrete
-> input and result ("uma medição de 1,235 vai aparecer como 1,24"), why it matters, and the
-> evidence in plain words ("fiz um teste rápido e saiu `"1,24"`").
+> 🟡 Esse teste, e o da barra do topo na linha 67, esperam que o nome mostrado seja igual ao login
+> ("admin", com a inicial "A"). Hoje isso é verdade, mas só porque o backend usa o próprio login
+> como nome: no `LoginUseCase.cs`, linha 20, está `emissor.Emitir(requisicao.Usuario, requisicao.Usuario, ...)`.
+> Imagino que seja provisório até a CET mandar o nome de verdade. Os testes de unidade do backend
+> já usam "Ana Souza", por exemplo.
 >
-> The suggested fix, phrased as a suggestion ("acho que trocar para ... resolve", "que tal ...?").
+> Quando isso mudar, esses testes quebram sem que a tela esteja errada. Uma constante `NOME` no
+> `apoio.ts`, com um comentário dizendo que hoje ela é igual ao login, deixa claro o que precisa
+> ser trocado.
 ````
 
-Writing rules for the comment:
+The three parts, always in this order:
 
-- Full path from the repo root plus the line, so the user can find it in the PR. The code block is the real line from the PR, not a paraphrase.
-- Severity emoji first. 🟠/🔴 say clearly that it should be fixed before merge; 🟡 says it can wait ("não é urgente", "pode ficar para depois").
-- Plain, friendly sentences, no review jargon, no IDs like F1, no evidence lists. Cite the other `file:line` inline in the sentence when it proves the point (duplication, canonical helper).
+1. **Location line**: `**📍 \`caminho/a/partir/da/raiz\` · linha N**`. Full path from the repo root, so the person finds it in the PR.
+2. **Code block**: the real line(s) from the PR at that location, copied verbatim, with the language tag. Never a paraphrase.
+3. **Comment** in a quote (`>`), starting with the severity emoji, in two short paragraphs: first what happens (with the concrete case or input and its result, and the evidence said in plain words), then what to do (as a suggestion).
+
+Vocabulary and tone, the part that most often goes wrong:
+
+- **Write like a colleague talking at the desk, not like a report.** First person ("Conferi", "Imagino que", "Acho que"), everyday words, short sentences. If a sentence would sound strange said out loud, rewrite it.
+- **Explain, do not label.** Instead of jargon ("stacking context", "race condition", "flaky", "drift", "trap"), say what happens in plain words ("a dica fica presa na camada do menu", "se a renovação demorar e outra pessoa entrar, ..."). A technical term may appear only after the plain explanation, in parentheses.
+- **Concrete over abstract.** A real example with values ("1,235 vira 1,24", "quem entra como admin vê 'A'") beats any general statement.
+- **Suggest, do not order.** "Que tal ...?", "Acho que ... resolve", "Dava para ...". For 🟠/🔴 still say clearly that it should be fixed before merge; for 🟡 say it can wait ("Não é urgente", "pode ficar para depois").
+- **Acknowledging is allowed.** One short clause recognizing what the author did right or why the code is the way it is ("Entendi o truque: ...", "Faz sentido ignorar o erro aqui: ...") makes the point land. No empty praise.
+- **No review machinery in the chat**: no IDs like F1, no evidence lists, no "Pass A", no gate words. Cite another `arquivo:linha` inside the sentence when it proves the point (duplication, an existing helper).
+- **Questions are allowed** when the author may know something you do not: start with "Mais uma pergunta: ..." and end with the question.
 - The nit overflow is not hidden: show it as another 🟡 block.
 
 After the findings, close with one block:
@@ -190,9 +207,15 @@ After the findings, close with one block:
 ```markdown
 **Resumo da revisão**
 
-> Two to four sentences: what is good about the PR, the build/test numbers, and which points
-> must be fixed before merge versus which can wait. The verdict token in parentheses.
+> PR pequena e bem feita. Os testes novos cobrem o gerador, o controller, o hook e o diálogo, e o
+> build passa com os 318 testes verdes.
+>
+> Antes do merge, eu corrigiria só a quantidade arredondada. O resto pode ficar para depois. (COMMENT)
 ```
+
+Two to four sentences in the same voice: what is good about the PR, the build/test numbers, what must be fixed before merge versus what can wait, and the verdict token in parentheses.
+
+If you checked something and dropped it, add a short "**Uma suspeita que descartei:**" paragraph in plain words (what you suspected, what you checked, why it is fine). It shows the review was careful and saves the next reviewer the same doubt.
 
 Then, in a short line outside the review, mention only what did not run (checks skipped, gate not run) and where `findings.json` is. The research log stays in `findings.json` and is shown only if the user asks.
 
