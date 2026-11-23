@@ -1,4 +1,6 @@
 ---
+origem: claude
+revisado: false
 tipo: decisao
 projeto: cet-medicao
 data: 2026-11-12

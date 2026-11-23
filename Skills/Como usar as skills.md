@@ -1,4 +1,6 @@
 ---
+origem: claude
+revisado: false
 tipo: indice
 ---
 # Como usar as skills

@@ -1,4 +1,6 @@
 ---
+origem: claude
+revisado: false
 tipo: conceito
 area: C#
 projetos: [cash-flow, cet-medicao]

@@ -38,6 +38,10 @@ complemento) e espere ele confirmar. Pouco e bom: 1 a 3 notas por sessão é o n
 
 ## 3. Escrever
 
+- Toda nota nova leva `origem: claude` e `revisado: false` no frontmatter; nota existente que você alterou
+  leva só `revisado: false`. Nunca marque `revisado: true`: quem revisa é o Lucas, pela nota `Revisar`.
+- Se o que ele aprendeu é uma **escolha** dele ("sempre uso X"), proponha um item novo, sem marca, na nota
+  certa de `Padrões/`, em vez de criar um conceito.
 - Preencha o frontmatter do template. `area` é um de: `Arquitetura`, `C#`, `.NET / EF Core`, `IA`.
 - Escreva simples, sempre com o **porquê**.
 - Em "Como aparece no código": caminho do arquivo no repo + hash curto do commit

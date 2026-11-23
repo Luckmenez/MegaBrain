@@ -1,4 +1,5 @@
 ---
+revisado: false
 tipo: conceito
 area: .NET / EF Core
 projetos: [cash-flow, cet-medicao]
