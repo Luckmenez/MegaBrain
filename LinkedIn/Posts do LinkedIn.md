@@ -20,6 +20,7 @@ isométrico, post-its).
 |---|---|---|---|---|---|---|
 | 2026-11-16 | [[LinkedIn/posts/2026-11-16 unit-of-work/post\|Unit of Work]] | carrinho de supermercado e caixa | caderno | 2 faixas (sem × com) + código | teal + mostarda | publicado 2026-11-16 |
 | 2026-11-16 | [[LinkedIn/posts/2026-11-16 tempos-de-vida-di/post\|Tempos de vida na DI]] | copo, caneca e garrafa do escritório | lousa | 3 colunas + contadores + código | azul-céu + rosa (giz) | rascunho |
+| 2026-11-18 | [[LinkedIn/posts/2026-11-18 fitness-functions/post\|Fitness functions]] | calibre "passa / não passa" de fábrica | blueprint | objeto central (esteira + calibre) + anexo de código | branco + verde/vermelho de status | rascunho |
 
 ## Ideias de tema
 - async/await: o garçom que atende outras mesas enquanto a cozinha prepara
