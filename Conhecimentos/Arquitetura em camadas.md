@@ -1,4 +1,6 @@
 ---
+origem: claude
+revisado: false
 tipo: conceito
 area: Arquitetura
 projetos: [cash-flow, cet-medicao]
@@ -30,13 +32,18 @@ O truque é a **inversão de dependência**:
 Assim a Aplicação chama `ICetGateway` sem saber se do outro lado está a CET real, um mock ou um teste.
 
 ## Como aparece no código
-**[[cet-medicao]]**: a regra é seguida. Todas as interfaces moram no Dominio:
+**[[cet-medicao]]**: no código, a regra é seguida. Todas as interfaces moram no Dominio:
 ```text
 Dominio/Repositorios/IMedicaoRepositorio.cs   → Infra/DataAccess/Repositorio/MedicaoRepositorio.cs
 Dominio/Repositorios/IUnidadeDeTrabalho.cs    → Infra/DataAccess/Repositorio/UnidadeDeTrabalho.cs
 Dominio/Gateways/ICetGateway.cs               → Infra/Gateways/CetGatewayMock.cs
 ```
 As implementações da Infra são `internal`: de fora só se enxerga a interface.
+
+Mas há uma porta aberta nos `.csproj`: a Aplicacao **referencia a Infra** (commit `b8f8372`). Nenhum arquivo
+da Aplicacao usa a Infra; a referência existe para a Api enxergar o `AddInfra` por tabela. O risco é um caso de
+uso passar a usar o `DbContext` direto sem o compilador reclamar. O mais limpo é a Api referenciar a Infra
+diretamente: ver [[Projetos da solução]].
 
 **[[cash-flow]]**: a regra é quebrada em um ponto: `IUnitOfWork` está na Infrastructure, e por isso a
 Application referencia a Infrastructure. Foi uma escolha consciente para seguir o curso:
