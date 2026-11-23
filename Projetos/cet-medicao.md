@@ -1,4 +1,6 @@
 ---
+origem: claude
+revisado: false
 tipo: projeto
 repo: https://github.com/RautakiTecnologia/cetsp-medicao-de-contratos
 pasta: ~/dev/cet/cet-medicao
@@ -18,9 +20,9 @@ enquanto ele é um mock (`CetGatewayMock`), porque a integração real ainda nã
 ```text
 Rascunho ──enviar──▶ ComGestor ──encaminhar──▶ EnviadaFinanceira
                         │  ▲
-                devolver│  │corrigir (ainda não existe)
+                devolver│  │corrigir (reenvia ao gestor)
                         ▼  │
-                     Devolvida ──▶ Corrigida
+                     Devolvida ──▶ Corrigida ──encaminhar──▶ EnviadaFinanceira
 (Cancelada: feito pela Financeira fora do sistema)
 ```
 Quem garante que só se encaminha uma medição `ComGestor` é a própria entidade: ver [[Modelo de domínio rico]].
@@ -63,6 +65,12 @@ com `ProblemDetails`:
 
 Commit `c442f10`.
 
+### Rodar local
+- `npm run dev` usa o **mock** do front (só aceita um usuário e não conhece endpoints novos). Para a API de
+  verdade: `npm run dev:api`.
+- Migrations não rodam sozinhas: `dotnet ef database update` com `--project` e `--startup-project` apontando
+  para a `Infra`.
+
 ## Conceitos usados aqui
 - [[Arquitetura em camadas]]: a regra de dependência e onde mora cada interface
 - [[Gateway]]: `ICetGateway` no Dominio, mock na Infra (commit `6e177c2`)
@@ -73,11 +81,13 @@ Commit `c442f10`.
 - [[async-await e CancellationToken]]: todo caso de uso recebe `CancellationToken ct`
 - [[FluentValidation]]: `SalvarRascunhoValidador`
 - [[Records]]: DTOs da `Comunicacao` e `SaldoReservado`
+- [[Value Converter do EF Core]]: itens apontados e o que mudou na correção, como JSON numa coluna
 
 ## Decisões
 - [[2026-10-26 Sessão de 24h e CET só no login]]
 - [[2026-11-04 Regras do envio na entidade antes da transação]]
 - [[2026-11-12 Adiar o Início do gestor até a história]]
+- [[2026-11-17 Correção como rascunho ligado à medição]]
 
 ## Próximos passos
 - [ ] **Dual write na renovação do token.** O `RenovarTokenUseCase` revoga o token antigo e grava o novo em
@@ -86,5 +96,9 @@ Commit `c442f10`.
   `SalvarRascunhoValidador`). Ver [[FluentValidation]].
 - [ ] Fechar a janela do encaminhamento (`TODO(MDC-182)`): CET aceitou e o commit falhou. Ver
   [[Dual write#No cet-medicao: banco + CET no encaminhamento]].
-- [ ] Ligar o fluxo de **correção** (`Corrigida`), hoje só previsto em TODOs da `MedicaoDeContrato`.
+- [x] Ligar o fluxo de **correção** (`Corrigida`): feito em 17/11/2026, em 4 PRs empilhados sobre a devolução
+  com motivo por item. Ver [[2026-11-17 Correção como rascunho ligado à medição]].
+- [ ] Guardar as **observações** no rascunho (hoje se perdem ao salvar no meio da correção).
+- [x] Gestor **devolver de novo** uma medição `Corrigida` (18/11/2026, PR em cima da pilha da correção).
+- [ ] Fiscal **solicitar devolução**: outro fluxo.
 - [ ] Trocar o `CetGatewayMock` pela integração real quando a CET entregar os endpoints.

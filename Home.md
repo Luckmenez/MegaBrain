@@ -1,10 +1,13 @@
 ---
+revisado: false
 tipo: indice
 ---
 # Home
 
 Ponto de entrada do vault. Se uma nota não está ligada daqui (direta ou indiretamente), ela está perdida.
 Links em cinza são notas que ainda não existem: a lista do que escrever depois.
+
+> **Para revisar:** [[Revisar]]
 
 ## Projetos
 - [[cet-medicao]]: medição de contratos (trabalho). .NET 10 + EF Core + SQL Server, React
@@ -29,6 +32,7 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 ### .NET / EF Core
 - [[DbContext]]
 - [[Migrations]]
+- [[Value Converter do EF Core]]
 
 ### IA
 - [[Contexto para agentes de IA]]
@@ -36,6 +40,7 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 - [[MCP]]
 
 ## Decisões
+- [[2026-11-17 Correção como rascunho ligado à medição]] ([[cet-medicao]])
 - [[2026-11-12 Adiar o Início do gestor até a história]] ([[cet-medicao]])
 - [[2026-11-11 Manter IUnitOfWork na Infrastructure]] ([[cash-flow]])
 - [[2026-11-04 Regras do envio na entidade antes da transação]] ([[cet-medicao]])
@@ -47,5 +52,10 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 ## Skills
 - [[Como usar as skills]]: o que tem, como chamar, como instalar numa máquina nova
 
+## Padrões
+O que eu escolho usar. A IA lê antes de implementar e só segue os itens marcados.
+- [[CSharp|C#]]
+
 ## Regras do vault
+- [[Revisar]]: tudo o que o Claude criou ou alterou e eu ainda não conferi
 - `CLAUDE.md` (raiz deste vault): pastas, nomes, regras e como escrever caminhos que funcionam em qualquer máquina
