@@ -41,6 +41,7 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 - [[MCP]]
 
 ## Decisões
+- [[2026-11-23 Copiar o domínio do Termal do framework]] ([[cetsp-indicadores-termal]])
 - [[2026-11-17 Correção como rascunho ligado à medição]] ([[cet-medicao]])
 - [[2026-11-12 Adiar o Início do gestor até a história]] ([[cet-medicao]])
 - [[2026-11-11 Manter IUnitOfWork na Infrastructure]] ([[cash-flow]])
