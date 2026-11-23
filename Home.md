@@ -11,6 +11,7 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 
 ## Projetos
 - [[cet-medicao]]: medição de contratos (trabalho). .NET 10 + EF Core + SQL Server, React
+- [[cetsp-indicadores-termal]]: "BI de trânsito" da CET, tabela termal de km de lentidão (trabalho). .NET 10 + React
 - [[cash-flow]]: API de controle de despesas (estudo). .NET + EF Core + MySQL
 
 ## Conhecimentos
