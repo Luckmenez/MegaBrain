@@ -34,6 +34,7 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 - [[DbContext]]
 - [[Migrations]]
 - [[Value Converter do EF Core]]
+- [[Serviço em segundo plano (BackgroundService)]]
 
 ### IA
 - [[Contexto para agentes de IA]]
@@ -41,6 +42,7 @@ Links em cinza são notas que ainda não existem: a lista do que escrever depois
 - [[MCP]]
 
 ## Decisões
+- [[2026-11-24 Buscar os dias anteriores por uma fila no banco]] ([[cetsp-indicadores-termal]])
 - [[2026-11-23 Copiar o domínio do Termal do framework]] ([[cetsp-indicadores-termal]])
 - [[2026-11-17 Correção como rascunho ligado à medição]] ([[cet-medicao]])
 - [[2026-11-12 Adiar o Início do gestor até a história]] ([[cet-medicao]])
